@@ -20,9 +20,7 @@
       "@nx-nestjs-microservices/shared/entity": [
         "shared/src/lib/entities/index.ts"
       ],
-      "@nx-nestjs-microservices/shared/lib": [
-        "shared/src/lib/shared.ts"
-      ]
+      "@nx-nestjs-microservices/shared/lib": ["shared/src/lib/shared.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
