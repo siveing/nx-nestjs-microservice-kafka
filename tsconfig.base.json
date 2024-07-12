@@ -1,0 +1,29 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@api-gateway/shared": ["shared/src/index.ts"],
+      "@nx-nestjs-microservices/shared/dto": ["shared/src/lib/dto/index.ts"],
+      "@nx-nestjs-microservices/shared/entity": [
+        "shared/src/lib/entities/index.ts"
+      ],
+      "@nx-nestjs-microservices/shared/lib": [
+        "shared/src/lib/shared.ts"
+      ]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

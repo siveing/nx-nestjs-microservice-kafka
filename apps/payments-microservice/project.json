@@ -1,0 +1,24 @@
+{
+  "name": "payments-microservice",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/payments-microservice/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "payments-microservice:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "payments-microservice:build:development"
+        },
+        "production": {
+          "buildTarget": "payments-microservice:build:production"
+        }
+      }
+    }
+  }
+}
