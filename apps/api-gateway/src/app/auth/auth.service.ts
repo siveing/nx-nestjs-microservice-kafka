@@ -1,23 +1,44 @@
 // apps/api-gateway/src/auth/auth.service.ts
 
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { CreateUserDto } from '@nx-nestjs-microservices/shared/dto';
-import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto, SignInDto } from '@core/shared/dto';
+import { firstValueFrom, timeout } from 'rxjs';
+
+import * as C from '@core/shared/constant';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements OnModuleInit {
     constructor(
-        @Inject('AUTH_MICROSERVICE') private readonly authClient: ClientKafka,
-        private readonly jwtService: JwtService,
+        @Inject('AUTH_MICROSERVICE') private readonly authClient: ClientKafka
     ) { }
 
-    async createUser(createUserDto: CreateUserDto) {
+    async handleSignIn(body: SignInDto){
+        console.log('call to sign in event');
+        const result = await firstValueFrom(this.authClient.send(C.MESSAGE_PATTERN.SIGN_IN, JSON.stringify(body)).pipe(timeout(10000)));
+        return result;
+    }
 
-        // CREATE JWT FROM CORE PROJECT 
-        const encryptedText = await this.jwtService.signAsync(createUserDto);
-        createUserDto.encryptedText = encryptedText;
-        
-        this.authClient.emit('create_user', JSON.stringify(createUserDto));
+    createUser(createUserDto: CreateUserDto) {
+        this.authClient.emit('user.create', JSON.stringify(createUserDto));
+        return createUserDto;
+    }
+
+    async createUserMessage(createUserDto: CreateUserDto) {
+        const result = await firstValueFrom(this.authClient.send(C.MESSAGE_PATTERN.USER_CREATE, JSON.stringify(createUserDto)).pipe(timeout(10000)));
+        return result;
+    }
+
+    async getListUsers() {
+        console.log('call to list user message');
+        const resultList = await firstValueFrom(this.authClient.send(C.MESSAGE_PATTERN.USER_LIST, {}).pipe(timeout(10000)));
+        return resultList;
+    }
+
+    async onModuleInit() {
+        this.authClient.subscribeToResponseOf(C.MESSAGE_PATTERN.USER_LIST);
+        this.authClient.subscribeToResponseOf(C.MESSAGE_PATTERN.USER_CREATE);
+        this.authClient.subscribeToResponseOf(C.MESSAGE_PATTERN.SIGN_IN);
+        await this.authClient.connect();
     }
 }

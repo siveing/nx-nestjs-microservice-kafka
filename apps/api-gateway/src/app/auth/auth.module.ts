@@ -4,7 +4,7 @@ import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { JwtModule } from "@nx-nestjs-microservices/shared/lib"
+import { JwtModule } from "@core/shared/lib"
 
 @Module({
     imports: [
@@ -17,7 +17,7 @@ import { JwtModule } from "@nx-nestjs-microservices/shared/lib"
                         clientId: 'auth',
                         brokers: ['localhost:29092'],
                     },
-                    producerOnlyMode: true,
+                    // producerOnlyMode: true,
                     consumer: {
                         groupId: 'auth-consumer',
                     },
