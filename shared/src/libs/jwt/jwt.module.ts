@@ -8,7 +8,6 @@ import { JwtModule as NestJwtModule } from '@nestjs/jwt';
     NestJwtModule.registerAsync({
       useFactory: async () => {
         console.log("=============== JWT MODULE ", process.env.JWT_SECRET);
-
         return ({ secret: process.env.JWT_SECRET })
       }
     })

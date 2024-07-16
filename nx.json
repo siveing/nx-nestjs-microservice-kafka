@@ -42,6 +42,5 @@
         "apps/payments-microservice-e2e/**/*"
       ]
     }
-  ],
-  "nxCloudAccessToken": "Yzc5YzM3MzctMTQzMi00OTVjLWE3MjQtMTY5MjJiYWM5YmY4fHJlYWQtd3JpdGU="
+  ]
 }

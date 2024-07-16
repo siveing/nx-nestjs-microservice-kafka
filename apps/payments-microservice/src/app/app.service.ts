@@ -1,5 +1,5 @@
-import { MakePaymentDto } from '@nx-nestjs-microservices/shared/dto';
-import { User } from '@nx-nestjs-microservices/shared/entity';
+import { MakePaymentDto } from '@core/shared/dto';
+import { User } from '@core/shared/entity';
 
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';

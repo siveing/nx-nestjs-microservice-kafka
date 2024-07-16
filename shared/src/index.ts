@@ -1,1 +1,1 @@
-export * from './lib/shared';
+export * from './libs/shared';

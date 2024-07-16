@@ -2,7 +2,7 @@
 
 import { Body, Controller, Logger, Post, ValidationPipe } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDto } from '@nx-nestjs-microservices/shared/dto';
+import { CreateUserDto } from '@core/shared/dto';
 
 @Controller('auth')
 export class AuthController {
@@ -12,7 +12,16 @@ export class AuthController {
 
     @Post('sign-up')
     createUser(@Body(ValidationPipe) createUserDto: CreateUserDto) {
-        this.logger.debug('\n====================== \nwork calling to auth controller\n======================');
+        // this.logger.debug('\n====================== \nwork calling to auth controller\n======================');
         return this.authService.createUser(createUserDto);
+    }
+
+    @Post('msg/sign-up')
+    createUserMessage(@Body(ValidationPipe) createUserDto: CreateUserDto) {
+        const result = this.authService.createUserMessage(createUserDto);
+        return {
+            message: 'user created',
+            data: result
+        }
     }
 }

@@ -1,23 +1,29 @@
 // apps/api-gateway/src/auth/auth.service.ts
 
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { CreateUserDto } from '@nx-nestjs-microservices/shared/dto';
-import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from '@core/shared/dto';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements OnModuleInit {
     constructor(
-        @Inject('AUTH_MICROSERVICE') private readonly authClient: ClientKafka,
-        private readonly jwtService: JwtService,
+        @Inject('AUTH_MICROSERVICE') private readonly authClient: ClientKafka
     ) { }
 
-    async createUser(createUserDto: CreateUserDto) {
+    createUser(createUserDto: CreateUserDto) {
+        console.log('call to create user event');
+        this.authClient.emit('user.create', JSON.stringify(createUserDto));
+    }
 
-        // CREATE JWT FROM CORE PROJECT 
-        const encryptedText = await this.jwtService.signAsync(createUserDto);
-        createUserDto.encryptedText = encryptedText;
-        
-        this.authClient.emit('create_user', JSON.stringify(createUserDto));
+    createUserMessage(createUserDto: CreateUserDto) {
+        console.log('call to create user message');
+        const res = this.authClient.send('message.user.create', JSON.stringify(createUserDto))
+        if (res) return res;
+        throw new BadRequestException('User not created')
+    }
+
+    async onModuleInit() {
+        this.authClient.subscribeToResponseOf('message.user.create');
+        await this.authClient.connect();
     }
 }

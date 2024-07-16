@@ -16,11 +16,11 @@
     "baseUrl": ".",
     "paths": {
       "@api-gateway/shared": ["shared/src/index.ts"],
-      "@nx-nestjs-microservices/shared/dto": ["shared/src/lib/dto/index.ts"],
-      "@nx-nestjs-microservices/shared/entity": [
-        "shared/src/lib/entities/index.ts"
+      "@core/shared/dto": ["shared/src/dtos/index.ts"],
+      "@core/shared/entity": [
+        "shared/src/entities/index.ts"
       ],
-      "@nx-nestjs-microservices/shared/lib": ["shared/src/lib/shared.ts"]
+      "@core/shared/lib": ["shared/src/libs/shared.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

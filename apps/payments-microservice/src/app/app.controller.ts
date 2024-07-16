@@ -1,4 +1,4 @@
-import { MakePaymentDto } from '@nx-nestjs-microservices/shared/dto';
+import { MakePaymentDto } from '@core/shared/dto';
 import { Controller, ValidationPipe } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 
