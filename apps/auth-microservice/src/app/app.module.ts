@@ -1,25 +1,42 @@
+// ENV
+import 'dotenv/config';
+
 import { Module } from '@nestjs/common';
 
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from "@core/shared/lib";
+import { ConfigModule } from '@nestjs/config';
+import { PassportModule } from '@nestjs/passport';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import config from './config/config';
+import environments from './config/environments';
 import { AuthModule } from './module/auth/auth.module';
 import { ENTITIES, UserModule } from './module/user/user.module';
 
 @Module({
   imports: [
+    // REGISTER CONFIG
+    ConfigModule.forRoot({
+      envFilePath: environments[process.env.NODE_ENV] || '.env.local',
+      load: [config],
+      isGlobal: true,
+    }),
+
+    PassportModule,
+
     // REGISTER TYPEORM
     TypeOrmModule.forRootAsync({
-      useFactory: () => ({
-        type: 'mysql',
-        host: '127.0.0.1',
-        port: 3306,
-        username: 'root',
-        password: 'jincuteboi',
-        database: 'nx-micro',
-        synchronize: true,
-        logging: false,
-        entities: [...ENTITIES],
-      }),
+      useFactory: () =>{
+        return {
+          type: 'mysql',
+          host: process.env.DB_HOST || 'localhost',
+          port: Number(process.env.DB_PORT) || 3306,
+          username: process.env.DB_USERNAME || '',
+          password: process.env.DB_PASSWORD || '',
+          database: process.env.DB_SCHEMA || '',
+          entities: ENTITIES,
+          synchronize: true
+        }
+      }
     }),
 
     // REGISTER JWT
@@ -30,6 +47,6 @@ import { ENTITIES, UserModule } from './module/user/user.module';
     AuthModule
   ],
   controllers: [],
-  providers: [JwtModule],
+  providers: [JwtModule, ConfigModule, PassportModule],
 })
 export class AppModule { }

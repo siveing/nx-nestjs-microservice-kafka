@@ -20,7 +20,10 @@
       "@core/shared/entity": [
         "shared/src/entities/index.ts"
       ],
-      "@core/shared/lib": ["shared/src/libs/shared.ts"]
+      "@core/shared/lib": ["shared/src/libs/shared.ts"],
+      "@core/shared/constant": ["shared/src/core/constants/index.ts"],
+      "@core/shared/filter": ["shared/src/core/filters/index.ts"],
+      "@core/shared/interceptor": ["shared/src/core/interceptors/index.ts"],
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -2,7 +2,10 @@
 
 import { BadRequestException, Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { CreateUserDto } from '@core/shared/dto';
+import { CreateUserDto, SignInDto } from '@core/shared/dto';
+import { firstValueFrom, timeout } from 'rxjs';
+
+import * as C from '@core/shared/constant';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -10,20 +13,32 @@ export class AuthService implements OnModuleInit {
         @Inject('AUTH_MICROSERVICE') private readonly authClient: ClientKafka
     ) { }
 
-    createUser(createUserDto: CreateUserDto) {
-        console.log('call to create user event');
-        this.authClient.emit('user.create', JSON.stringify(createUserDto));
+    async handleSignIn(body: SignInDto){
+        console.log('call to sign in event');
+        const result = await firstValueFrom(this.authClient.send(C.MESSAGE_PATTERN.SIGN_IN, JSON.stringify(body)).pipe(timeout(10000)));
+        return result;
     }
 
-    createUserMessage(createUserDto: CreateUserDto) {
-        console.log('call to create user message');
-        const res = this.authClient.send('message.user.create', JSON.stringify(createUserDto))
-        if (res) return res;
-        throw new BadRequestException('User not created')
+    createUser(createUserDto: CreateUserDto) {
+        this.authClient.emit('user.create', JSON.stringify(createUserDto));
+        return createUserDto;
+    }
+
+    async createUserMessage(createUserDto: CreateUserDto) {
+        const result = await firstValueFrom(this.authClient.send(C.MESSAGE_PATTERN.USER_CREATE, JSON.stringify(createUserDto)).pipe(timeout(10000)));
+        return result;
+    }
+
+    async getListUsers() {
+        console.log('call to list user message');
+        const resultList = await firstValueFrom(this.authClient.send(C.MESSAGE_PATTERN.USER_LIST, {}).pipe(timeout(10000)));
+        return resultList;
     }
 
     async onModuleInit() {
-        this.authClient.subscribeToResponseOf('message.user.create');
+        this.authClient.subscribeToResponseOf(C.MESSAGE_PATTERN.USER_LIST);
+        this.authClient.subscribeToResponseOf(C.MESSAGE_PATTERN.USER_CREATE);
+        this.authClient.subscribeToResponseOf(C.MESSAGE_PATTERN.SIGN_IN);
         await this.authClient.connect();
     }
 }
