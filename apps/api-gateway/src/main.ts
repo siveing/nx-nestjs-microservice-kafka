@@ -22,6 +22,7 @@ async function bootstrap() {
       disableErrorMessages: false,
       whitelist: true,
       transform: true,
+      errorHttpStatusCode: 422,
     }),
   );
 

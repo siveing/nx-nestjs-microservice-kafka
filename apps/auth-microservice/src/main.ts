@@ -21,7 +21,7 @@ async function bootstrap() {
           brokers: ['localhost:29092'],
         },
         consumer: {
-          groupId: 'auth-consumer',
+          groupId: '1-auth',
           // sessionTimeout: 15000,
           // retry: {
           //   maxRetryTime: 2

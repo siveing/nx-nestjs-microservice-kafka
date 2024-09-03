@@ -13,11 +13,11 @@ import { PaymentController } from './payment.controller';
                 transport: Transport.KAFKA,
                 options: {
                     client: {
-                        clientId: 'payment',
-                        brokers: ['kafka-learn:9092'],
+                        clientId: 'payment' + Math.floor(Math.random() * 1000),
+                        brokers: ['localhost:29092'],
                     },
                     consumer: {
-                        groupId: 'payment-consumer',
+                        groupId: '1-payment',
                     },
                 },
             },
@@ -25,5 +25,6 @@ import { PaymentController } from './payment.controller';
     ],
     providers: [PaymentService],
     controllers: [PaymentController],
+    exports: [PaymentService, ClientsModule],
 })
 export class PaymentModule { }

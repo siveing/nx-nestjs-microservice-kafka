@@ -1,9 +1,9 @@
 
 export const MESSAGE_PATTERN = {
     // AUTH
-    SIGN_IN: 'auth.signIn',
+    SIGN_IN: 'auth.message.signIn',
 
-    USER_CREATE: 'message.user.create',
-    USER_UPDATE: 'user.update.message',
-    USER_LIST: 'message.user.list',
+    USER_CREATE: 'auth.message.user.create',
+    USER_UPDATE: 'auth.message.user.update',
+    USER_LIST: 'auth.message.user.list',
 }

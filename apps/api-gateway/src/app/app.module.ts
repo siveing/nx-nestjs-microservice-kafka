@@ -8,9 +8,9 @@ import { PaymentModule } from './payment/payments.module';
 @Module({
   imports: [
     AuthModule,
-    PaymentModule
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

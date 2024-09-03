@@ -1,6 +1,6 @@
 // libs/shared/src/lib/dto/make-payment.dto.ts
 
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class MakePaymentDto {
     @IsNotEmpty()
@@ -11,3 +11,24 @@ export class MakePaymentDto {
     @IsNumber()
     amount: number;
 }
+
+export class CreatePaymentDto {
+    @IsNotEmpty()
+    @IsNumber()
+    userId: number;
+
+    @IsNotEmpty()
+    @IsString()
+    name: string;
+
+    @IsNotEmpty()
+    @IsNumber()
+    amount: number;
+}
+
+export class GetPaymentDto {
+    @IsNotEmpty()
+    @IsNumber()
+    id: number;
+}
+
